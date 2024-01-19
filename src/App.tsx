@@ -2,14 +2,44 @@
 // import { useState } from "react";
 // import Button from "./Components/Ui/Button";
 // import Modal from "./Components/Ui/Modal";
-
+import { FieldValues, useForm } from "react-hook-form";
 import NormalForm from "./Components/NormalForm/NormalForm";
+import { Form, FormSection, FormSubmit } from "./Components/ReusableForm";
 import Container from "./Components/Ui/Container";
 
 function App() {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: FieldValues) => {
+    console.log(data);
+  };
   return (
     <Container>
-      <NormalForm />
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormSection>
+          <div className="w-full max-w-md">
+            <label className="block" htmlFor="name">
+              Name:
+            </label>
+            <input
+              type="text"
+              placeholder="Enter Your Fucking Name"
+              id="name"
+              {...register("name")}
+            />
+            {errors.name && (
+              <span className="text-red-500 text-xs">
+                {errors.name.message}
+              </span>
+            )}
+          </div>
+        </FormSection>
+        <FormSubmit></FormSubmit>
+      </Form>
     </Container>
   );
 }
